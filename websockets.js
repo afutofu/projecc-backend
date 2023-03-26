@@ -1,9 +1,11 @@
 const socketio = require("socket.io");
+require("dotenv/config");
 
 const Project = require("./models/Project");
 
 const connectSocket = (server) => {
   const io = socketio(server);
+  io.origins(process.env.DOMAIN_NAME);
 
   io.on("connection", (socket) => {
     console.log(socket.id, "has connected");

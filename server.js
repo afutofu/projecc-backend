@@ -34,10 +34,6 @@ app.use("/api/users/:userId/friends", friendRoutes);
 app.use("/api/directMessages", directMessageRoutes);
 app.use("/api/auth", authRoutes);
 
-// WEBSOCKETS
-const server = http.createServer(app);
-connectSocket(server);
-
 // CONNECT TO DB
 const connectDB = async () => {
   try {
@@ -54,16 +50,13 @@ const connectDB = async () => {
   }
 };
 
-// SERVE STATIC ASSETS IF IN PRODUCTION
-// app.use(express.static("client/build"));
-
-// app.get("*", (_req, res) => {
-//   res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-// });
-
 // Connect to the database before listening
 connectDB().then(() => {
-  app.listen(PORT, () => {
-    console.log("Listening for requests...");
+  // WEBSOCKETS
+  const server = http.createServer(app);
+  connectSocket(server);
+
+  server.listen(PORT, () => {
+    console.log("Server listening for requests on port:", PORT);
   });
 });
